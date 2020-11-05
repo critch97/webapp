@@ -12,7 +12,11 @@ app = Flask(__name__, static_folder="static", static_url_path="")
 app.config["SECRET_KEY"] = ""
 app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024
 bcrypt = Bcrypt(app)
-temp_ip = 'localhost'
+
+temp_ip = ''# AWS RDS MariaDB
+db_user = "" # db username
+db_password = ""# db password
+
 
 # Setting routes for the URLs
 @app.route("/")
@@ -195,4 +199,4 @@ def logout():
 
 
 if __name__=="__main__":
-    app.run(port=5000, host="localhost")
+    app.run(port=80, host=0.0.0.0)
