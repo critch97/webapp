@@ -47,7 +47,7 @@ def register():
             hash_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
 
             # Connecting to the sql database
-            connection = pymysql.connect(host=temp_ip,user=' ',password='',db='', port=3306)
+            connection = pymysql.connect(host=temp_ip, user=db_user, password=db_password, db=db_name , port=3306)
             try:
                 with connection.cursor() as cursor:
                     # Testing to see if the user already exists
@@ -59,7 +59,7 @@ def register():
 
                     else:
                         # Connecting to the sql database
-                        connection = pymysql.connect(host=temp_ip,user='',password='',db='', port=3306)
+                        connection = pymysql.connect(host=temp_ip,user=db_user, password=db_password, db=db_name, port=3306)
                         with connection.cursor() as cursor:
                             cursor.execute("""INSERT INTO accounts (username,password,email,profile_pictures) VALUES(%s,%s,%s,%s)""", (username, hash_password, email, default_pic))
                             connection.commit()
@@ -87,7 +87,7 @@ def login():
             email = form.email.data
             password_auth = form.password.data
             # Connecting to the sql database
-            connection = pymysql.connect(host=temp_ip,user=' ',password='',db='', port=3306)
+            connection = pymysql.connect(host=temp_ip, user=db_user, password=db_password, db=db_name, port=3306)
             try:
                 with connection.cursor() as cursor:
                     # Testing to see if the user already exists
@@ -149,7 +149,7 @@ def upload_image():
             # Saving the image in the folder specified in pic_path rootpath/static/profile_pics
             i.save(pic_path)
 
-            connection = pymysql.connect(host=temp_ip,user=' ',password='',db='', port=3306)
+            connection = pymysql.connect(host=temp_ip, user=db_user, password=db_password, db=db_name, port=3306)
             with connection.cursor() as cursor:
                 id_pic = session.get("id")
                 # Storing the filename of the image in the database, identified by id
@@ -167,7 +167,7 @@ def upload_image():
 @app.route("/profile", methods=["POST","GET"])
 def profile():
     if "loggedin" in session:
-        connection = pymysql.connect(host=temp_ip,user=' ',password='',db='', port=3306)
+        connection = pymysql.connect(host=temp_ip, user=db_user, password=db_password, db=db_name, port=3306)
         with connection.cursor() as cursor:
             cursor.execute('SELECT profile_pictures FROM accounts WHERE id=%s',(session.get('id')))
             results = cursor.fetchall()
